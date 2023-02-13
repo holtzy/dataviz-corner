@@ -1,0 +1,7 @@
+name: 'Hello worldddd'
+description: 'say hello world mate'
+author: 'Yan Holtz Bro'
+
+runs:
+  using: 'node12'
+  main: 'index.js'
