@@ -1,6 +1,7 @@
 // Import the filesystem module
 const fs = require('fs');
 
+
 const obj = {
     toto: 2
 }
