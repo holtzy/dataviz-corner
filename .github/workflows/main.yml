@@ -12,10 +12,10 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v2
       # Run index.js in my root folder
-      # - uses: ./
-# The Flat Action step. We fetch the data in the http_url and save it as downloaded_filename
-      - name: Fetch data
-        uses: githubocto/flat@v3
-        with:
-          http_url: 'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR'
-          downloaded_filename: 'price.json'
+      - uses: ./
+      # The Flat Action step. We fetch the data in the http_url and save it as downloaded_filename
+      # - name: Fetch data
+      #   uses: githubocto/flat@v3
+      #   with:
+      #     http_url: 'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR'
+      #     downloaded_filename: 'price.json'
