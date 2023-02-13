@@ -6,7 +6,7 @@ name: "Fetch RSS Feeds"
 on: push
 
 jobs:
-  fetch-crypto-data:
+  fetch-blog-data:
     runs-on: ubuntu-latest
     steps:
       # Check out the repository so it can read the files inside of it and do other operations
