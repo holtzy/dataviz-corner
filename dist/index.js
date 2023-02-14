@@ -7548,46 +7548,95 @@ module.exports = JSON.parse('{"amp":"&","apos":"\'","gt":">","lt":"<","quot":"\\
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__nccwpck_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
+"use strict";
+// ESM COMPAT FLAG
+__nccwpck_require__.r(__webpack_exports__);
+
+;// CONCATENATED MODULE: ./data/blogs.ts
+var blogs = [
+    {
+        feedUrl: "https://blog.datawrapper.de/feed/",
+        image: "https://blog.datawrapper.de/wp-content/uploads/2021/03/favicon.png",
+        title: "Datawrapper Blog",
+        description: "Weekly Charts, Data Vis How-To’s and Datawrapper Feature news",
+    },
+    {
+        feedUrl: "https://datavis.blog/feed/",
+        image: "",
+        title: "Datavis.blog",
+        description: "todo",
+    }
+    // https://junkcharts.typepad.com/junk_charts/atom.xml
+];
+
+;// CONCATENATED MODULE: ./index.js
 // Import the filesystem module
 const fs = __nccwpck_require__(7147);
+
+
 let Parser = __nccwpck_require__(1479);
 let parser = new Parser();
 
-(async () => {
+// const getFeed = async(url) => {
+//     return(
+//         await parser.parseURL(url)
+//     )
+// }
 
-  let feed = await parser.parseURL('https://blog.datawrapper.de/feed');
-  console.log(feed.title);
-
-  feed.items.forEach(item => {
-    console.log(item.link)
-  });
-
-  var json = JSON.stringify(feed);
-
-    fs.writeFile("./data-datawrapper.json", json,
-    {
-        encoding: "utf8",
-        flag: "w",
-        mode: 0o666
-    },
-    (err) => {
-        if (err)
-        console.log(err);
-        else {
-        console.log("File   written  successfully\n");
-        }
-    });
+// const feeds = blogs.map(blog => {
+//     console.log(blog.feedUrl)
+//     let feed = getFeed(blog.feedUrl);
+//     console.log(feed.title);
+// })
 
 
-})();
+
+
+Promise.all(blogs.map(blog => parser.parseURL(blog.feedUrl)))
+    .then(res => {
+        console.log('------')
+        console.log(res.map(blog => blog.feedUrl))
+
+        const cleanRes = res.flatMap(blog => blog.items)
+
+        var json = JSON.stringify(cleanRes);
+
+        fs.writeFile("./data/data.json", json,
+        {
+            encoding: "utf8",
+            flag: "w",
+            mode: 0o666
+        },
+        (err) => {
+            if (err)
+            console.log(err);
+            else {
+            console.log("File   written  successfully\n");
+            console.log(cleanRes.length + ' blogPost harvested')
+            }
+        });
+    })
+
+
 
 
 
