@@ -7563,7 +7563,7 @@ let parser = new Parser();
 
 (async () => {
 
-  let feed = await parser.parseURL('https://www.reddit.com/.rss');
+  let feed = await parser.parseURL('https://blog.datawrapper.de/feed');
   console.log(feed.title);
 
   feed.items.forEach(item => {
@@ -7572,7 +7572,7 @@ let parser = new Parser();
 
   var json = JSON.stringify(feed);
 
-    fs.writeFile("./data.json", json,
+    fs.writeFile("./data-datawrapper.json", json,
     {
         encoding: "utf8",
         flag: "w",
@@ -7582,7 +7582,7 @@ let parser = new Parser();
         if (err)
         console.log(err);
         else {
-        console.log("File written successfully\n");
+        console.log("File   written  successfully\n");
         }
     });
 
