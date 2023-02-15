@@ -1,18 +1,38 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
-import { blogs } from 'data/blogs.ts'
+import { blogs } from 'data/blogs'
 
-export default function Home() {
+type Post = {
+  creator: string,
+  title: string,
+  link: string,
+  pubDate: Date,
+  ['content:encoded']: string,
+  ['content:encodedSnippet']: string,
+  isoDate: Date,
+  content: string,
+  contentSnippet: string
+}
 
-  const allPosts = blogs.map((blog, i) => {
+type ComponentProps = {
+  posts: Post[]
+}
+
+export default function Home(props: ComponentProps) {
+
+  const allBlogs = blogs.map((blog, i) => {
     return (
       <p key={i}>{blog.title}</p>
     )
   })
 
+  const posts = props.posts;
 
+  const allPosts = posts.map((post, i) => {
+    return (
+      <div key={i}><p >{post.title}</p><p>{post.contentSnippet}</p></div>
+    )
+  })
 
   return (
     <>
@@ -26,10 +46,25 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1>The Dataviz Corner</h1>
+        {/* {allBlogs} */}
         {allPosts}
       </main>
-
-
     </>
   )
+}
+
+// Fetching data from the JSON file
+import fsPromises from 'fs/promises';
+import path from 'path'
+
+export async function getStaticProps() {
+  const filePath = path.join(process.cwd(), 'data/data.json');
+  const jsonData = await fsPromises.readFile(filePath);
+  const posts = JSON.parse(jsonData);
+
+  return {
+    props: {
+      posts,
+    },
+  }
 }
