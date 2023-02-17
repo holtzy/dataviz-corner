@@ -1,24 +1,11 @@
 // Import the filesystem module
 const fs = require('fs');
+
+// List of blogs to fetch stored in an array
 import { blogs } from 'data/blogs.ts'
 
 let Parser = require('rss-parser');
 let parser = new Parser();
-
-// const getFeed = async(url) => {
-//     return(
-//         await parser.parseURL(url)
-//     )
-// }
-
-// const feeds = blogs.map(blog => {
-//     console.log(blog.feedUrl)
-//     let feed = getFeed(blog.feedUrl);
-//     console.log(feed.title);
-// })
-
-
-
 
 Promise.all(blogs.map(blog => parser.parseURL(blog.feedUrl)))
     .then(res => {

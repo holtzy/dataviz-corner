@@ -1,38 +1,26 @@
-import Head from 'next/head'
-import styles from '@/styles/Home.module.css'
-import { blogs } from 'data/blogs'
-
-type Post = {
-  creator: string,
-  title: string,
-  link: string,
-  pubDate: Date,
-  ['content:encoded']: string,
-  ['content:encodedSnippet']: string,
-  isoDate: Date,
-  content: string,
-  contentSnippet: string
-}
+import Head from "next/head";
+import { blogs } from "data/blogs";
+import { PostOverview } from "@/components/PostOverview";
+import { Post } from "@/Utils/types";
 
 type ComponentProps = {
-  posts: Post[]
-}
+  posts: Post[];
+};
 
 export default function Home(props: ComponentProps) {
-
   const allBlogs = blogs.map((blog, i) => {
-    return (
-      <p key={i}>{blog.title}</p>
-    )
-  })
+    return <p key={i}>{blog.title}</p>;
+  });
 
   const posts = props.posts;
 
   const allPosts = posts.map((post, i) => {
     return (
-      <div key={i}><p >{post.title}</p><p>{post.contentSnippet}</p></div>
-    )
-  })
+      <div key={i} className="">
+        <PostOverview post={post} />
+      </div>
+    );
+  });
 
   return (
     <>
@@ -43,22 +31,31 @@ export default function Home(props: ComponentProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <HeaderSection />
 
-      <main className={styles.main}>
-        <h1>The Dataviz Corner</h1>
-        {/* {allBlogs} */}
-        {allPosts}
+      <main>
+        <div className="wrapper">
+          <div className="flex flex-row w-full">
+            <div className="w-3/4">{allPosts}</div>
+            <div className="w-1/4 ">
+              <p>Topics</p>
+            </div>
+          </div>
+        </div>
       </main>
+
+      <Contact />
     </>
-  )
+  );
 }
 
-// Fetching data from the JSON file
-import fsPromises from 'fs/promises';
-import path from 'path'
-
+// Load all the posts stored in a JSON file
+import fsPromises from "fs/promises";
+import path from "path";
+import { HeaderSection } from "@/components/HeaderSection";
+import Contact from "@/components/Contact";
 export async function getStaticProps() {
-  const filePath = path.join(process.cwd(), 'data/data.json');
+  const filePath = path.join(process.cwd(), "data/data.json");
   const jsonData = await fsPromises.readFile(filePath);
   const posts = JSON.parse(jsonData);
 
@@ -66,5 +63,5 @@ export async function getStaticProps() {
     props: {
       posts,
     },
-  }
+  };
 }

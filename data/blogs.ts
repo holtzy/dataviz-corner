@@ -19,7 +19,6 @@ export const blogs: Blog[] = [
         description: "todo",
     }
 
-
     // https://junkcharts.typepad.com/junk_charts/atom.xml
 
 ]
