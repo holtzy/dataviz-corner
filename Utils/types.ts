@@ -1,4 +1,5 @@
-export type Topic = 'R' | 'python' | 'd3' | 'react' | 'julia' | 'tableau' | 'news'
+export const topics = ['R', 'python', 'd3', 'react', 'julia', 'tableau', 'news'] as const
+export type Topic = typeof topics
 
 export type Post = {
     creator: string,

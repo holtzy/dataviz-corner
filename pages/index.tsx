@@ -2,6 +2,13 @@ import Head from "next/head";
 import { blogs } from "data/blogs";
 import { PostOverview } from "@/components/PostOverview";
 import { Post } from "@/Utils/types";
+import fsPromises from "fs/promises";
+import path from "path";
+import { HeaderSection } from "@/components/HeaderSection";
+import Contact from "@/components/Contact";
+import { TopicPills } from "@/components/TopicPills";
+import { SideBarTitle } from "@/components/SideBarTitle";
+import Navbar from "@/components/Navbar";
 
 type ComponentProps = {
   posts: Post[];
@@ -31,14 +38,36 @@ export default function Home(props: ComponentProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <div className="wrapper">
+        <Navbar />
+      </div>
+
       <HeaderSection />
 
       <main>
         <div className="wrapper">
           <div className="flex flex-row w-full">
-            <div className="w-3/4">{allPosts}</div>
-            <div className="w-1/4 ">
-              <p>Topics</p>
+            {/* BLOG COLUMN */}
+            <div className="w-3/4 pr-2">
+              <SideBarTitle title="topics" />
+              {allPosts}
+            </div>
+
+            {/* SIDEBAR */}
+            <div className="w-1/4 pl-2">
+              <SideBarTitle title="topics" />
+              <TopicPills />
+              <br />
+              <SideBarTitle title="trending blogs" />
+              <br />
+              <SideBarTitle title="subscribe" />
+              <p className="text-sm">
+                Get a summary of the best blogs each week in your inbox.
+              </p>
+              <br />
+              <SideBarTitle title="suggest a blog" />
+              <br />
+              <SideBarTitle title="about the viz corner" />
             </div>
           </div>
         </div>
@@ -50,10 +79,7 @@ export default function Home(props: ComponentProps) {
 }
 
 // Load all the posts stored in a JSON file
-import fsPromises from "fs/promises";
-import path from "path";
-import { HeaderSection } from "@/components/HeaderSection";
-import Contact from "@/components/Contact";
+
 export async function getStaticProps() {
   const filePath = path.join(process.cwd(), "data/data.json");
   const jsonData = await fsPromises.readFile(filePath);
