@@ -68,6 +68,11 @@ export default function Home(props: ComponentProps) {
               <SideBarTitle title="suggest a blog" />
               <br />
               <SideBarTitle title="about the viz corner" />
+              <p className="text-sm">
+                Tired of exploring 100s of bookmarks? Or to browse the dying
+                bird-app? This page is made for you, harvesting all the best
+                dataviz content!
+              </p>
             </div>
           </div>
         </div>

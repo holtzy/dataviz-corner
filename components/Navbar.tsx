@@ -10,7 +10,7 @@ export default function Navbar() {
           <div className="flex items-center">
             <Link href="/">
               <span className="ml-2 text-white text-md lg:text-md cursor-pointer">
-                The <span className="gradient">React</span> Graph Gallery
+                Octopus
               </span>
             </Link>
           </div>
