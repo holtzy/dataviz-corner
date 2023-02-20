@@ -21,11 +21,13 @@ Promise.all(blogs.map(blog => parser.parseURL(blog.feedUrl)))
     console.log('------')
     console.log(res.map(blog => blog.feedUrl))
 
-    const cleanRes = res.flatMap(blog => blog.items)
+    const allPosts = res.flatMap(blog => blog.items).sort((a, b) =>
+      b.date - a.date
+    )
 
-    const json = JSON.stringify(cleanRes)
-
-    fs.writeFile('../data.json', json,
+    // Save a file with ALL posts
+    const json = JSON.stringify(allPosts)
+    fs.writeFile('../data-first-20', json,
       {
         encoding: 'utf8',
         flag: 'w',
@@ -34,7 +36,33 @@ Promise.all(blogs.map(blog => parser.parseURL(blog.feedUrl)))
       (err: any) => {
         if (err) { console.log(err) } else {
           console.log('File   written  successfully\n')
-          console.log(cleanRes.length + ' blogPost harvested')
+          console.log(allPosts.length + ' blogPost harvested')
+        }
+      })
+
+    // Save a file with the 20 latests post only
+    const firstPosts = allPosts.slice(0, 19).map(post => {
+      return ({
+
+        creator: post.creator,
+        title: post.title,
+        link: post.link,
+        pubDate: post.pubDate,
+        isoDate: post.isoDate,
+        content: post.content,
+        contentSnippet: post.contentSnippet
+      })
+    })
+    const firstPostsJson = JSON.stringify(firstPosts)
+    fs.writeFile('../data-first-20.json', firstPostsJson,
+      {
+        encoding: 'utf8',
+        flag: 'w',
+        mode: 0o666
+      },
+      (err: any) => {
+        if (err) { console.log(err) } else {
+          console.log('first posts File   written  successfully\n')
         }
       })
   })

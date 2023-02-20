@@ -7604,9 +7604,12 @@ Promise.all(blogs.map(function (blog) { return parser.parseURL(blog.feedUrl); })
     .then(function (res) {
     console.log('------');
     console.log(res.map(function (blog) { return blog.feedUrl; }));
-    var cleanRes = res.flatMap(function (blog) { return blog.items; });
-    var json = JSON.stringify(cleanRes);
-    fs.writeFile('../data.json', json, {
+    var allPosts = res.flatMap(function (blog) { return blog.items; }).sort(function (a, b) {
+        return b.date - a.date;
+    });
+    // Save a file with ALL posts
+    var json = JSON.stringify(allPosts);
+    fs.writeFile('../data-first-20', json, {
         encoding: 'utf8',
         flag: 'w',
         mode: 438
@@ -7616,7 +7619,32 @@ Promise.all(blogs.map(function (blog) { return parser.parseURL(blog.feedUrl); })
         }
         else {
             console.log('File   written  successfully\n');
-            console.log(cleanRes.length + ' blogPost harvested');
+            console.log(allPosts.length + ' blogPost harvested');
+        }
+    });
+    // Save a file with the 20 latests post only
+    var firstPosts = allPosts.slice(0, 19).map(function (post) {
+        return ({
+            creator: post.creator,
+            title: post.title,
+            link: post.link,
+            pubDate: post.pubDate,
+            isoDate: post.isoDate,
+            content: post.content,
+            contentSnippet: post.contentSnippet
+        });
+    });
+    var firstPostsJson = JSON.stringify(firstPosts);
+    fs.writeFile('../data-first-20.json', firstPostsJson, {
+        encoding: 'utf8',
+        flag: 'w',
+        mode: 438
+    }, function (err) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            console.log('first posts File   written  successfully\n');
         }
     });
 });
