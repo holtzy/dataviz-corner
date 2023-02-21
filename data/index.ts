@@ -3,9 +3,7 @@ import { blogs } from './blogs'
 // This is the script run to harvest rss feeds every x hours.
 // To be run by the github action, it needs to be bundled with the necessary library
 // This is possible thanks to the ncc lib using:
-
 // ncc build index.js -o dist
-
 // Do it each time this file is modified
 
 // Import the filesystem module
@@ -19,15 +17,16 @@ const parser = new Parser()
 Promise.all(blogs.map(blog => parser.parseURL(blog.feedUrl)))
   .then(res => {
     console.log('------')
-    console.log(res.map(blog => blog.feedUrl))
+    console.log(res.map(blogFeed => blogFeed.feedUrl))
 
-    const allPosts = res.flatMap(blog => blog.items).sort((a, b) =>
+    const allPosts = res.flatMap(blogFeed => blogFeed.items).sort((a, b) =>
       b.date - a.date
     )
+    console.log('allPost', allPosts)
 
     // Save a file with ALL posts
     const json = JSON.stringify(allPosts)
-    fs.writeFile('../data-first-20', json,
+    fs.writeFile('data-full.json', json,
       {
         encoding: 'utf8',
         flag: 'w',
@@ -43,7 +42,6 @@ Promise.all(blogs.map(blog => parser.parseURL(blog.feedUrl)))
     // Save a file with the 20 latests post only
     const firstPosts = allPosts.slice(0, 19).map(post => {
       return ({
-
         creator: post.creator,
         title: post.title,
         link: post.link,
@@ -54,7 +52,7 @@ Promise.all(blogs.map(blog => parser.parseURL(blog.feedUrl)))
       })
     })
     const firstPostsJson = JSON.stringify(firstPosts)
-    fs.writeFile('../data-first-20.json', firstPostsJson,
+    fs.writeFile('data-first-20.json', firstPostsJson,
       {
         encoding: 'utf8',
         flag: 'w',
@@ -62,7 +60,7 @@ Promise.all(blogs.map(blog => parser.parseURL(blog.feedUrl)))
       },
       (err: any) => {
         if (err) { console.log(err) } else {
-          console.log('first posts File   written  successfully\n')
+          console.log('first 20 posts File written  successfully\n')
         }
       })
   })

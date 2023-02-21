@@ -10,7 +10,7 @@ import Perlin from "Utils/perlin";
 //
 const width = 600;
 const height = 500;
-const gapSize = 30; // space in px between 2 data points
+const gapSize = 20; // space in px between 2 data points
 
 type Data = {
   x: number; // used to translate the shape later on
@@ -65,7 +65,7 @@ export default function Home() {
 //
 const perlin = new Perlin(Math.random());
 
-const noiseFactor = 0.08;
+const noiseFactor = 0.05;
 
 //
 // renderer: just draw the final output based on the perline Noise Value and an offset
@@ -76,7 +76,7 @@ type GraphProps = {
 };
 
 const Graph = ({ offset, data }: GraphProps) => {
-  const color = d3.interpolateViridis;
+  const color = d3.interpolateRainbow;
 
   const allLines = data.map((item, i) => {
     return (
@@ -86,7 +86,7 @@ const Graph = ({ offset, data }: GraphProps) => {
           transform: `translate(${item.x}px,${item.y}px)`,
         }}
       >
-        <circle
+        {/* <circle
           cx={0}
           cy={0}
           r={
@@ -100,8 +100,8 @@ const Graph = ({ offset, data }: GraphProps) => {
           fill={color(
             perlin.perlin2(item.xVal * noiseFactor + offset, item.yVal * noiseFactor + offset)
           )}
-        ></circle>
-        {/* <line
+        ></circle> */}
+        <line
           x1={0}
           y1={0}
           stroke={color(
@@ -124,7 +124,7 @@ const Graph = ({ offset, data }: GraphProps) => {
             )
           }
           strokeWidth={2}
-        ></line> */}
+        ></line>
       </g>
     );
   });
