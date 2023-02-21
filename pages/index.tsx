@@ -15,9 +15,9 @@ type ComponentProps = {
 };
 
 export default function Home(props: ComponentProps) {
-  const allBlogs = blogs.map((blog, i) => {
-    return <p key={i}>{blog.title}</p>;
-  });
+  // const allBlogs = blogs.map((blog, i) => {
+  //   return <p key={i}>{blog.title}</p>;
+  // });
 
   const posts = props.posts;
 
@@ -61,17 +61,14 @@ export default function Home(props: ComponentProps) {
               <SideBarTitle title="trending blogs" />
               <br />
               <SideBarTitle title="subscribe" />
-              <p className="text-sm">
-                Get a summary of the best blogs each week in your inbox.
-              </p>
+              <p className="text-sm">Get a summary of the best blogs each week in your inbox.</p>
               <br />
               <SideBarTitle title="suggest a blog" />
               <br />
               <SideBarTitle title="about the viz corner" />
               <p className="text-sm">
-                Tired of exploring 100s of bookmarks? Or to browse the dying
-                bird-app? This page is made for you, harvesting all the best
-                dataviz content!
+                Tired of exploring 100s of bookmarks? Or to browse the dying bird-app? This page is
+                made for you, harvesting all the best dataviz content!
               </p>
             </div>
           </div>
@@ -86,7 +83,7 @@ export default function Home(props: ComponentProps) {
 // Load all the posts stored in a JSON file
 
 export async function getStaticProps() {
-  const filePath = path.join(process.cwd(), "data/data.json");
+  const filePath = path.join(process.cwd(), "data/data-first-20.json");
   const jsonData = await fsPromises.readFile(filePath);
   const posts = JSON.parse(jsonData);
 
