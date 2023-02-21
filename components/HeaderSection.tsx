@@ -8,12 +8,20 @@ export const HeaderSection = () => {
 
   return (
     <div className="h-screen flex justify-center items-center flex-col" ref={ref}>
-      <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+        }}
+      >
         <VoronoiBackground width={width} height={height} />
       </div>
-      <h1 className="gradient" style={{ fontSize: 80 }}>
+      {/* <h1 className="gradient" style={{ fontSize: 80 }}>
         The Dataviz Corner
-      </h1>
+      </h1> */}
       <p>an aggregator of dataviz blogs</p>
     </div>
   );

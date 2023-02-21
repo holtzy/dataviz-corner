@@ -1,7 +1,8 @@
 // Video to understand perlin Noise: https://www.youtube.com/watch?v=ikwNrFvnL3g
 
 import * as d3 from "d3";
-import { useEffect, useState } from "react";
+import { Delaunay } from "d3";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Perlin from "Utils/perlin";
 
 //
@@ -45,21 +46,21 @@ type VoronoiBackgroundProps = {
 };
 
 export const VoronoiBackground = ({ width, height }: VoronoiBackgroundProps) => {
-  console.log("width", width);
-
-  const data = getData(width, height);
+  const data = useMemo(() => getData(width, height), []);
+  console.log("getDadta", data);
 
   const [offset, setOffset] = useState(0);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setOffset(offset + OFFSET_STEP);
-    }, 0);
-  }, [offset]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setOffset(offset + OFFSET_STEP);
+  //   }, 0);
+  // }, [offset]);
 
   return (
     <div>
-      <Graph offset={offset} data={data} width={width} height={height} />
+      {/* <Graph offset={offset} data={data} width={width} height={height} /> */}
+      <VoronoiGraph offset={1} data={data} width={width} height={height} />
     </div>
   );
 };
@@ -144,6 +145,52 @@ const Graph = ({ offset, data, width, height }: GraphProps) => {
       <svg width={width} height={height} className="svgContainer">
         {allLines}
       </svg>
+    </div>
+  );
+};
+
+//
+// renderer: just draw the final output based on the perline Noise Value and an offset
+//
+type VoronoiGraphProps = {
+  offset: number;
+  data: Data;
+  width: number;
+  height: number;
+};
+
+const VoronoiGraph = ({ offset, data, width, height }: VoronoiGraphProps) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const particles = Array.from({ length: 1000 }, () => [
+    Math.random() * width,
+    Math.random() * height,
+  ]);
+
+  const delaunay = Delaunay.from(particles);
+
+  const voronoi = delaunay.voronoi([0, 0, width, height]);
+  console.log("data", data);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+
+    if (!ctx) {
+      return;
+    }
+
+    ctx.clearRect(0, 0, width, height);
+
+    ctx.beginPath();
+    voronoi.render(ctx);
+    voronoi.renderBounds(ctx);
+    ctx.strokeStyle = "grey";
+    ctx.stroke();
+  }, [canvasRef.current]);
+
+  return (
+    <div>
+      <canvas ref={canvasRef} width={width} height={height} />
     </div>
   );
 };
