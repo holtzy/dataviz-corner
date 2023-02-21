@@ -38,7 +38,7 @@ const getData = (width: number, height: number): Data => {
 // A component that initialize the dataset and render the graph.
 // Then create a loop to update the perlin offset progressively.
 //
-const OFFSET_STEP = 0.004; // if offset_step is higher, we move each time to a step that is further in the perlin noise, thus more different. It results in an animation that looks faster.
+const OFFSET_STEP = 0.0008; // if offset_step is higher, we move each time to a step that is further in the perlin noise, thus more different. It results in an animation that looks faster.
 
 type VoronoiBackgroundProps = {
   width: number;
@@ -51,16 +51,16 @@ export const VoronoiBackground = ({ width, height }: VoronoiBackgroundProps) => 
 
   const [offset, setOffset] = useState(0);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setOffset(offset + OFFSET_STEP);
-  //   }, 0);
-  // }, [offset]);
+  useEffect(() => {
+    setTimeout(() => {
+      setOffset(offset + OFFSET_STEP);
+    }, 10);
+  }, [offset]);
 
   return (
     <div>
       {/* <Graph offset={offset} data={data} width={width} height={height} /> */}
-      <VoronoiGraph offset={1} data={data} width={width} height={height} />
+      <VoronoiGraph offset={offset} data={data} width={width} height={height} />
     </div>
   );
 };
@@ -70,8 +70,7 @@ export const VoronoiBackground = ({ width, height }: VoronoiBackgroundProps) => 
 // perlin.perlin2(0.1, 0.3) --> 0.1648953425443803
 //
 const perlin = new Perlin(Math.random());
-
-const noiseFactor = 0.045;
+const noiseFactor = 0.003;
 
 //
 // renderer: just draw the final output based on the perline Noise Value and an offset
@@ -81,6 +80,69 @@ type GraphProps = {
   data: Data;
   width: number;
   height: number;
+};
+
+//
+// renderer: just draw the final output based on the perline Noise Value and an offset
+//
+type VoronoiGraphProps = {
+  offset: number;
+  data: Data;
+  width: number;
+  height: number;
+};
+
+const VoronoiGraph = ({ offset, data, width, height }: VoronoiGraphProps) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  // Create n data points randomly located on the canvas
+  const particles = useMemo(() => {
+    return Array.from({ length: 2000 }, () => [Math.random() * width, Math.random() * height]);
+  }, [width, height]);
+
+  const voronoi = useMemo(() => {
+    const delaunay = Delaunay.from(particles);
+    return delaunay.voronoi([0, 0, width, height]);
+  }, [particles]);
+
+  // The perlin 2d algorythm return a values between -0.5 and -5. We want to map an opacity to this
+  const opacityScale = d3.scaleLinear().domain([-0.5, 0.5]).range([0.01, 0.7]);
+  const colorScale = d3
+    .scaleLinear()
+    .domain([-0.5, 0.2, 0.5])
+    .range(["purple", "#36454F", "#04d9ff"]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+
+    if (!ctx) {
+      return;
+    }
+
+    ctx.clearRect(0, 0, width, height);
+
+    particles.forEach((p, i) => {
+      const perlinValue = perlin.perlin2(p[0] * noiseFactor + offset, p[1] * noiseFactor + offset);
+      const opacity = opacityScale(perlinValue);
+
+      ctx.globalAlpha = opacity;
+      ctx.lineWidth = 0.5;
+      ctx.fillStyle = colorScale(perlinValue);
+      ctx.strokeStyle = "white";
+
+      ctx.beginPath();
+      voronoi.renderCell(i, ctx);
+      ctx.stroke();
+      ctx.fill();
+    });
+  }, [canvasRef.current, voronoi, offset]);
+
+  return (
+    <div>
+      <canvas ref={canvasRef} width={width} height={height} />
+    </div>
+  );
 };
 
 const Graph = ({ offset, data, width, height }: GraphProps) => {
@@ -145,52 +207,6 @@ const Graph = ({ offset, data, width, height }: GraphProps) => {
       <svg width={width} height={height} className="svgContainer">
         {allLines}
       </svg>
-    </div>
-  );
-};
-
-//
-// renderer: just draw the final output based on the perline Noise Value and an offset
-//
-type VoronoiGraphProps = {
-  offset: number;
-  data: Data;
-  width: number;
-  height: number;
-};
-
-const VoronoiGraph = ({ offset, data, width, height }: VoronoiGraphProps) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particles = Array.from({ length: 1000 }, () => [
-    Math.random() * width,
-    Math.random() * height,
-  ]);
-
-  const delaunay = Delaunay.from(particles);
-
-  const voronoi = delaunay.voronoi([0, 0, width, height]);
-  console.log("data", data);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
-
-    if (!ctx) {
-      return;
-    }
-
-    ctx.clearRect(0, 0, width, height);
-
-    ctx.beginPath();
-    voronoi.render(ctx);
-    voronoi.renderBounds(ctx);
-    ctx.strokeStyle = "grey";
-    ctx.stroke();
-  }, [canvasRef.current]);
-
-  return (
-    <div>
-      <canvas ref={canvasRef} width={width} height={height} />
     </div>
   );
 };
