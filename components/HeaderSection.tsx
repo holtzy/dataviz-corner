@@ -1,29 +1,29 @@
 import { useDimensions } from "@/hook/use-dimensions";
 import { useRef } from "react";
 import { VoronoiBackground } from "./VoronoiBackground";
+import styles from "./header-section.module.css";
 
 export const HeaderSection = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { width, height } = useDimensions(ref);
 
   return (
-    <div className="h-screen flex justify-center items-center flex-col">
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "50%",
-        }}
-        ref={ref}
-      >
+    <div className={styles.heroContainer}>
+      {/* Most below div is for voronoi */}
+      <div ref={ref} className={styles.voronoiContainer}>
         <VoronoiBackground width={width} height={height} />
       </div>
-      <h1 className="]" style={{ fontSize: 80 }}>
-        The Dataviz Corner
-      </h1>
-      <p>an aggregator of dataviz blogs</p>
+
+      <div className="wrapper">
+        <div style={{ height }} className="flex flex-col justify-center ">
+          <h1 className={"z-10 font-bold text-7xl"}>Explore the Art of Data Visualization</h1>
+          <br />
+          <p className={"z-10 font-normal text-xl"}>
+            The dataviz corner aggregates the best dataviz blogs and ship the result to your inbox
+            every week. Simply.
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
