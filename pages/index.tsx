@@ -9,6 +9,7 @@ import Contact from "@/components/Contact";
 import { TopicPills } from "@/components/TopicPills";
 import { SideBarTitle } from "@/components/SideBarTitle";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 type ComponentProps = {
   posts: Post[];
@@ -49,7 +50,7 @@ export default function Home(props: ComponentProps) {
           <div className="flex flex-row w-full">
             {/* BLOG COLUMN */}
             <div className="w-3/4 pr-4">
-              <SideBarTitle title="topics" />
+              <SideBarTitle title="latest" />
               {allPosts}
             </div>
 
@@ -76,6 +77,9 @@ export default function Home(props: ComponentProps) {
       </main>
 
       <Contact />
+      <div className="wrapper">
+        <Footer />
+      </div>
     </>
   );
 }

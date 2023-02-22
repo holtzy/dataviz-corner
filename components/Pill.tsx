@@ -1,9 +1,7 @@
 import * as d3 from "d3";
 
 type PillProps = {
-  color: string;
   label: string;
-  opacity?: number;
 };
 
 export const topics = [
@@ -38,13 +36,13 @@ const topicColors = {
   scrollytelling: d3.color("#D58BDD")?.darker(2),
 };
 
-export const Pill = ({ label, color, opacity }: PillProps) => {
+export const Pill = ({ label }: PillProps) => {
   const backgroundColor = topicColors[label] || "red";
 
   return (
     <button
-      style={{ backgroundColor, opacity: opacity || 1 }}
-      className="tracking-wider py-0 px-2 no-underline rounded-md text-white font-sans font-light text-xs mr-1 leading-5"
+      style={{ backgroundColor }}
+      className="opacity-80 hover:opacity-100 tracking-wider py-0 px-2 no-underline rounded-md text-white font-sans font-light text-xs mr-1 leading-5"
     >
       {label}
     </button>
