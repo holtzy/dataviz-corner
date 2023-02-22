@@ -6,7 +6,7 @@
   --light-grey:  #f8f9fa;
   --medium-grey: #e5e5e5;
   --dark-grey: #2b2a2a;
-  --react-gallery: #cb1dd1;
+  --react-gallery: #04d9ff;
   --light-black: #484848;
 }
 
@@ -18,7 +18,7 @@
   display: grid;
   grid-template-columns:
     1fr
-    min(822px, 100%)
+    min(900px, 100%)
     1fr;
 }
 .wrapper > * {
@@ -60,9 +60,9 @@ code {
 }
 a {
   color: var(--react-gallery);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: .1px;
+  /* text-decoration: underline; */
+  text-underline-offset: 6px;
+  text-decoration-thickness: 0px;
 }
 a:hover {
   color: #251667

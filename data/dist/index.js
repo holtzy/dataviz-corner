@@ -7672,6 +7672,17 @@ var blogs = [
 ];
 
 ;// CONCATENATED MODULE: ./index.ts
+var __assign = (undefined && undefined.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 
 // This is the script run to harvest rss feeds every x hours.
 // To be run by the github action, it needs to be bundled with the necessary library
@@ -7681,66 +7692,70 @@ var blogs = [
 // Import the filesystem module
 var fs = __nccwpck_require__(7147);
 // List of blogs to fetch stored in an array
+// https://github.com/rbren/rss-parser
 var Parser = __nccwpck_require__(5694);
 var parser = new Parser();
 var allPromises = blogs.map(function (blog) { return parser.parseURL(blog.feedUrl); });
-Promise.allSettled(allPromises)
-    .then(function (res) {
+Promise.allSettled(allPromises).then(function (res) {
     var allPosts = res
         .flatMap(function (blogResponse, i) {
-        if (blogResponse.status === 'fulfilled') {
-            console.log(blogs[i].title, blogResponse.value.feedUrl);
-            return blogResponse.value.items;
+        if (blogResponse.status === "fulfilled") {
+            var blogTitle_1 = blogs[i].title;
+            return blogResponse.value.items.map(function (item) {
+                var _a, _b;
+                var img = (_b = (_a = blogResponse.value.image) === null || _a === void 0 ? void 0 : _a.url) !== null && _b !== void 0 ? _b : undefined;
+                return __assign(__assign({}, item), { blogTitle: blogTitle_1, img: img });
+            });
         }
         else {
-            console.log('----- FAILING:', blogs[i].title);
+            console.log("----- FAILING:", blogs[i].title);
         }
     })
         .sort(function (a, b) {
-        console.log(a.isoDate);
-        return (a.isoDate < b.isoDate) ? -1 : 1;
+        return a.isoDate > b.isoDate ? -1 : 1;
     });
     //
     // Save a file with ALL posts
     //
     var json = JSON.stringify(allPosts);
-    fs.writeFile('data-full.json', json, {
-        encoding: 'utf8',
-        flag: 'w',
-        mode: 438
+    fs.writeFile("data-full.json", json, {
+        encoding: "utf8",
+        flag: "w",
+        mode: 438,
     }, function (err) {
         if (err) {
             console.log(err);
         }
         else {
-            console.log('File   written  successfully -- ' + allPosts.length + ' blogPost harvested');
+            console.log("File   written  successfully -- " + allPosts.length + " blogPost harvested");
         }
     });
     //
     // Save a file with the 20 latests post only
     //
     var firstPosts = allPosts.slice(0, 19).map(function (post) {
-        return ({
+        return {
             creator: post.creator,
             title: post.title,
             link: post.link,
             pubDate: post.pubDate,
             isoDate: post.isoDate,
-            content: post.content,
-            contentSnippet: post.contentSnippet
-        });
+            contentSnippet: post.contentSnippet,
+            blogTitle: post.blogTitle,
+            img: post.img
+        };
     });
     var firstPostsJson = JSON.stringify(firstPosts);
-    fs.writeFile('data-first-20.json', firstPostsJson, {
-        encoding: 'utf8',
-        flag: 'w',
-        mode: 438
+    fs.writeFile("data-first-20.json", firstPostsJson, {
+        encoding: "utf8",
+        flag: "w",
+        mode: 438,
     }, function (err) {
         if (err) {
             console.log(err);
         }
         else {
-            console.log('first 20 posts File written  successfully\n');
+            console.log("first 20 posts File written  successfully\n");
         }
     });
 });

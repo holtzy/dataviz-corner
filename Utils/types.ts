@@ -11,6 +11,8 @@ export type Post = {
     isoDate: Date,
     content: string,
     contentSnippet: string
+    blogTitle: string;
+    img: string;
 }
 
 export type PostOverview = {
@@ -21,6 +23,9 @@ export type PostOverview = {
     isoDate: Date,
     content: string,
     contentSnippet: string
+    blogTitle: string;
+    img: string;
+
 }
 
 export type Blog = {

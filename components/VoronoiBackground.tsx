@@ -11,29 +11,6 @@ import Perlin from "@/utils/perlin";
 //
 const gapSize = 40; // space in px between 2 data points
 
-type Data = {
-  x: number; // used to translate the shape later on
-  xVal: number;
-  y: number;
-  yVal: number;
-}[];
-
-const getData = (width: number, height: number): Data => {
-  const xCount = Math.floor(width / gapSize);
-  const yCount = Math.floor(height / gapSize);
-  const numPoints = xCount * yCount;
-
-  const data = d3.range(numPoints).map((i) => {
-    const xVal = i % xCount,
-      x = xVal * gapSize,
-      yVal = Math.floor(i / xCount),
-      y = yVal * gapSize;
-    return { x, xVal, y, yVal };
-  });
-
-  return data;
-};
-
 //
 // A component that initialize the dataset and render the graph.
 // Then create a loop to update the perlin offset progressively.
@@ -46,9 +23,6 @@ type VoronoiBackgroundProps = {
 };
 
 export const VoronoiBackground = ({ width, height }: VoronoiBackgroundProps) => {
-  const data = useMemo(() => getData(width, height), []);
-  console.log("getDadta", data);
-
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
@@ -60,7 +34,7 @@ export const VoronoiBackground = ({ width, height }: VoronoiBackgroundProps) => 
   return (
     <div>
       {/* <Graph offset={offset} data={data} width={width} height={height} /> */}
-      <VoronoiGraph offset={offset} data={data} width={width} height={height} />
+      <VoronoiGraph offset={offset} width={width} height={height} />
     </div>
   );
 };
@@ -75,24 +49,13 @@ const noiseFactor = 0.003;
 //
 // renderer: just draw the final output based on the perline Noise Value and an offset
 //
-type GraphProps = {
-  offset: number;
-  data: Data;
-  width: number;
-  height: number;
-};
-
-//
-// renderer: just draw the final output based on the perline Noise Value and an offset
-//
 type VoronoiGraphProps = {
   offset: number;
-  data: Data;
   width: number;
   height: number;
 };
 
-const VoronoiGraph = ({ offset, data, width, height }: VoronoiGraphProps) => {
+const VoronoiGraph = ({ offset, width, height }: VoronoiGraphProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Create n data points randomly located on the canvas
@@ -145,68 +108,68 @@ const VoronoiGraph = ({ offset, data, width, height }: VoronoiGraphProps) => {
   );
 };
 
-const Graph = ({ offset, data, width, height }: GraphProps) => {
-  const color = d3.interpolateRainbow;
+// const Graph = ({ offset, data, width, height }: GraphProps) => {
+//   const color = d3.interpolateRainbow;
 
-  const allLines = data.map((item, i) => {
-    return (
-      <g
-        key={i}
-        style={{
-          transform: `translate(${item.x}px,${item.y}px)`,
-        }}
-      >
-        {/* <circle
-          cx={0}
-          cy={0}
-          r={
-            (gapSize / 2) *
-            Math.cos(
-              2 *
-                Math.PI *
-                perlin.perlin2(item.xVal * noiseFactor + offset, item.yVal * noiseFactor + offset)
-            )
-          }
-          fill={color(
-            perlin.perlin2(item.xVal * noiseFactor + offset, item.yVal * noiseFactor + offset)
-          )}
-        ></circle> */}
-        <line
-          x1={0}
-          y1={0}
-          stroke={color(
-            perlin.perlin2(item.xVal * noiseFactor + offset, item.yVal * noiseFactor + offset)
-          )}
-          x2={
-            gapSize *
-            Math.sin(
-              2 *
-                Math.PI *
-                perlin.perlin2(item.xVal * noiseFactor + offset, item.yVal * noiseFactor + offset)
-            )
-          }
-          y2={
-            gapSize *
-            Math.cos(
-              2 *
-                Math.PI *
-                perlin.perlin2(item.xVal * noiseFactor + offset, item.yVal * noiseFactor + offset)
-            )
-          }
-          strokeWidth={2}
-          opacity={
-            perlin.perlin2(item.xVal * noiseFactor + offset, item.yVal * noiseFactor + offset) + 0.5
-          }
-        ></line>
-      </g>
-    );
-  });
+//   const allLines = data.map((item, i) => {
+//     return (
+//       <g
+//         key={i}
+//         style={{
+//           transform: `translate(${item.x}px,${item.y}px)`,
+//         }}
+//       >
+//         {/* <circle
+//           cx={0}
+//           cy={0}
+//           r={
+//             (gapSize / 2) *
+//             Math.cos(
+//               2 *
+//                 Math.PI *
+//                 perlin.perlin2(item.xVal * noiseFactor + offset, item.yVal * noiseFactor + offset)
+//             )
+//           }
+//           fill={color(
+//             perlin.perlin2(item.xVal * noiseFactor + offset, item.yVal * noiseFactor + offset)
+//           )}
+//         ></circle> */}
+//         <line
+//           x1={0}
+//           y1={0}
+//           stroke={color(
+//             perlin.perlin2(item.xVal * noiseFactor + offset, item.yVal * noiseFactor + offset)
+//           )}
+//           x2={
+//             gapSize *
+//             Math.sin(
+//               2 *
+//                 Math.PI *
+//                 perlin.perlin2(item.xVal * noiseFactor + offset, item.yVal * noiseFactor + offset)
+//             )
+//           }
+//           y2={
+//             gapSize *
+//             Math.cos(
+//               2 *
+//                 Math.PI *
+//                 perlin.perlin2(item.xVal * noiseFactor + offset, item.yVal * noiseFactor + offset)
+//             )
+//           }
+//           strokeWidth={2}
+//           opacity={
+//             perlin.perlin2(item.xVal * noiseFactor + offset, item.yVal * noiseFactor + offset) + 0.5
+//           }
+//         ></line>
+//       </g>
+//     );
+//   });
 
-  return (
-    <div>
-      <svg width={width} height={height} className="svgContainer">
-        {allLines}
-      </svg>
-    </div>
-  );
-};
+//   return (
+//     <div>
+//       <svg width={width} height={height} className="svgContainer">
+//         {allLines}
+//       </svg>
+//     </div>
+//   );
+// };

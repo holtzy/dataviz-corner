@@ -1,3 +1,4 @@
+import { blogs } from "@/data/blogs";
 import { Post } from "@/utils/types";
 import { Pill } from "./Pill";
 
@@ -6,13 +7,42 @@ type PostOverviewProps = {
 };
 
 export const PostOverview = ({ post }: PostOverviewProps) => {
-  return (
-    <div className="border-white rounded-md mb-8 px-4 py-2 bg-gray-900">
-      <Pill label="react" color="#69b3a9" />
-      <h1 className="text-2xl font-medium text-purple-200">{post.title}</h1>
+  const postDescription =
+    post.contentSnippet.length < 150
+      ? post.contentSnippet
+      : post.contentSnippet.slice(0, 150) + "...";
 
-      <p className="font-light">{post.contentSnippet}</p>
-      <p className="font-extralight text-sm text-gray-200">posted in datawrapper blogs</p>
+  const blogInfo = blogs.find((blog) => blog.title === post.blogTitle);
+
+  if (!blogInfo) {
+    return null;
+  }
+
+  const imgSrc = "/blogLogo/" + blogInfo.img;
+
+  return (
+    <div
+      style={{ backgroundColor: "#111216" }}
+      className="border border-opacity-20 border-teal-600 rounded-md bg-gray-900 flex w-full h-full mb-4 hover:shadow-custom cursor-pointer"
+    >
+      <div className="w-1/5 flex justify-center items-center">
+        <img src={imgSrc} className="h-20 w-20 rounded-full" />
+      </div>
+      <div className="w-4/5 px-4 py-4">
+        <p className="text-xl font-semibold text-white">{post.title}</p>
+
+        <p className="text-sm font-light text-white leading-6">{postDescription}</p>
+
+        <div className="flex items-baseline">
+          <p>
+            <span className="font-extralight text-sm text-gray-50 italic">posted in </span>
+            <span className="font-extralight text-sm text-gray-200 mr-4">
+              <a>{post.blogTitle}</a>
+            </span>
+          </p>
+          <Pill label="react" color="#69b3a9" />
+        </div>
+      </div>
     </div>
   );
 };
