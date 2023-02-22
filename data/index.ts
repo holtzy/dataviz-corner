@@ -3,28 +3,36 @@ import { blogs } from './blogs'
 // This is the script run to harvest rss feeds every x hours.
 // To be run by the github action, it needs to be bundled with the necessary library
 // This is possible thanks to the ncc lib using:
-// ncc build index.js -o dist
+// ncc build index.ts -o dist
 // Do it each time this file is modified
 
 // Import the filesystem module
 const fs = require('fs')
 
 // List of blogs to fetch stored in an array
-
 const Parser = require('rss-parser')
 const parser = new Parser()
 
-Promise.all(blogs.map(blog => parser.parseURL(blog.feedUrl)))
+const allPromises = blogs.map(blog => parser.parseURL(blog.feedUrl))
+Promise.allSettled(allPromises)
   .then(res => {
-    console.log('------')
-    console.log(res.map(blogFeed => blogFeed.feedUrl))
 
-    const allPosts = res.flatMap(blogFeed => blogFeed.items).sort((a, b) =>
-      b.date - a.date
-    )
-    console.log('allPost', allPosts)
+    const allPosts = res
+      .flatMap((blogResponse, i) => {
+        if (blogResponse.status === 'fulfilled') {
+          console.log(blogs[i].title, blogResponse.value.feedUrl)
+          return blogResponse.value.items
+        } else {
+          console.log('----- FAILING:', blogs[i].title)
+        }
+      })
+      .sort((a, b) =>
+        b.date - a.date
+      )
 
+    //
     // Save a file with ALL posts
+    //
     const json = JSON.stringify(allPosts)
     fs.writeFile('data-full.json', json,
       {
@@ -34,12 +42,13 @@ Promise.all(blogs.map(blog => parser.parseURL(blog.feedUrl)))
       },
       (err: any) => {
         if (err) { console.log(err) } else {
-          console.log('File   written  successfully\n')
-          console.log(allPosts.length + ' blogPost harvested')
+          console.log('File   written  successfully -- ' + allPosts.length + ' blogPost harvested')
         }
       })
 
+    //
     // Save a file with the 20 latests post only
+    //
     const firstPosts = allPosts.slice(0, 19).map(post => {
       return ({
         creator: post.creator,
@@ -64,3 +73,4 @@ Promise.all(blogs.map(blog => parser.parseURL(blog.feedUrl)))
         }
       })
   })
+

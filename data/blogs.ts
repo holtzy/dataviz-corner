@@ -1,4 +1,18 @@
-import { Blog } from '../utils/types'
+// Types are defined in the util/types.ts file
+// but I cannot import anything here, so I have to copy paste them
+// do not modify the types here. modify them in the util file and paste here
+const topics = ['R', 'python', 'd3', 'react', 'julia', 'tableau', 'news', 'tech', 'theory', 'conference', 'product', 'data journalism', 'scrollytelling'] as const
+type Topic = typeof topics[number]
+
+type Blog = {
+    feedUrl: string;
+    url: string,
+    image: string;
+    title: string;
+    description: string;
+    twitter?: string;
+    topics: Topic[]
+}
 
 export const blogs: Blog[] = [
     {
@@ -29,7 +43,7 @@ export const blogs: Blog[] = [
         topics: ['data journalism']
     },
     {
-        feedUrl: "flowingdata.com/feed",
+        feedUrl: "https://flowingdata.com/feed",
         url: "flowingdata.com",
         image: "",
         title: "Flowing Data",
@@ -74,7 +88,7 @@ export const blogs: Blog[] = [
         topics: ['data journalism', 'scrollytelling']
     },
     {
-        feedUrl: "http://www.thefunctionalart.com/feeds/posts/default?alt=rss",
+        feedUrl: "http://www.thefunctionalart.com/feeds/posts/default",
         url: "http://www.thefunctionalart.com",
         image: "",
         title: "The Functional Art",
