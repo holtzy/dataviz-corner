@@ -20,10 +20,17 @@ export const PostOverview = ({ post }: PostOverviewProps) => {
 
   const imgSrc = "/blogLogo/" + blogInfo.img;
 
+  const date = new Date(post.isoDate);
+  const formattedDate = date.toLocaleString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+
   return (
     <div
       style={{ backgroundColor: "#111216" }}
-      className="border border-opacity-20 border-teal-600 rounded-md bg-gray-900 flex w-full h-full mb-4 hover:shadow-custom cursor-pointer"
+      className="ease-in duration-100 hover:scale-105 border border-opacity-20 border-teal-600 rounded-md bg-gray-900 flex w-full h-full mb-4 hover:shadow-custom cursor-pointer"
     >
       <div className="w-1/5 flex justify-center items-center">
         <img src={imgSrc} className="h-20 w-20 rounded-full" />
@@ -36,11 +43,18 @@ export const PostOverview = ({ post }: PostOverviewProps) => {
         <div className="flex items-baseline">
           <p>
             <span className="font-extralight text-sm text-gray-50 italic">posted in </span>
-            <span className="font-extralight text-sm text-gray-200 mr-4">
+            <span className="font-extralight text-sm text-gray-200 mr-2">
               <a>{post.blogTitle}</a>
             </span>
+            <span className="font-extralight text-sm text-gray-200 mr-2">|</span>
+            <span className="font-extralight text-sm text-gray-50 italic mr-2">
+              {formattedDate}
+            </span>
+            <span className="font-extralight text-sm text-gray-200 mr-2">|</span>
           </p>
-          <Pill label="react" color="#69b3a9" />
+          {blogInfo.topics.map((topic) => (
+            <Pill label={topic} color="#69b3a9" />
+          ))}
         </div>
       </div>
     </div>

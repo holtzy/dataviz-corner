@@ -48,13 +48,13 @@ export default function Home(props: ComponentProps) {
         <div className="wrapper">
           <div className="flex flex-row w-full">
             {/* BLOG COLUMN */}
-            <div className="w-3/4 pr-2">
+            <div className="w-3/4 pr-4">
               <SideBarTitle title="topics" />
               {allPosts}
             </div>
 
             {/* SIDEBAR */}
-            <div className="w-1/4 pl-2">
+            <div className="w-1/4 pl-4">
               <SideBarTitle title="topics" />
               <TopicPills />
               <br />
