@@ -7697,7 +7697,8 @@ Promise.allSettled(allPromises)
         }
     })
         .sort(function (a, b) {
-        return b.date - a.date;
+        console.log(a.isoDate);
+        return (a.isoDate < b.isoDate) ? -1 : 1;
     });
     //
     // Save a file with ALL posts

@@ -26,8 +26,10 @@ Promise.allSettled(allPromises)
           console.log('----- FAILING:', blogs[i].title)
         }
       })
-      .sort((a, b) =>
-        b.date - a.date
+      .sort((a, b) => {
+        console.log(a.isoDate)
+        return (a.isoDate < b.isoDate) ? -1 : 1;
+      }
       )
 
     //
