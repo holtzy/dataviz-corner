@@ -1,5 +1,5 @@
-export const topics = ['R', 'python', 'd3', 'react', 'julia', 'tableau', 'news'] as const
-export type Topic = typeof topics
+export const topics = ['R', 'python', 'd3', 'react', 'julia', 'tableau', 'news', 'tech', 'theory', 'conference', 'product', 'data journalism', 'scrollytelling'] as const
+export type Topic = typeof topics[number]
 
 export type Post = {
     creator: string,
@@ -24,7 +24,12 @@ export type PostOverview = {
 }
 
 export type Blog = {
-    url: string;
-    twitter: string;
+    feedUrl: string;
+    url: string,
+    image: string;
+    title: string;
+    description: string;
+    twitter?: string;
     topics: Topic[]
 }
+

@@ -3,7 +3,7 @@
 import * as d3 from "d3";
 import { Delaunay } from "d3";
 import { useEffect, useMemo, useRef, useState } from "react";
-import Perlin from "Utils/perlin";
+import Perlin from "@/utils/perlin";
 
 //
 // Create initial dataset
@@ -97,7 +97,7 @@ const VoronoiGraph = ({ offset, data, width, height }: VoronoiGraphProps) => {
 
   // Create n data points randomly located on the canvas
   const particles = useMemo(() => {
-    return Array.from({ length: 2000 }, () => [Math.random() * width, Math.random() * height]);
+    return Array.from({ length: 8000 }, () => [Math.random() * width, Math.random() * height]);
   }, [width, height]);
 
   const voronoi = useMemo(() => {
@@ -109,7 +109,7 @@ const VoronoiGraph = ({ offset, data, width, height }: VoronoiGraphProps) => {
   const opacityScale = d3.scaleLinear().domain([-0.5, 0.5]).range([0.01, 0.7]);
   const colorScale = d3
     .scaleLinear()
-    .domain([-0.5, 0.2, 0.5])
+    .domain([-0.5, 0.2, 0.2])
     .range(["purple", "#36454F", "#04d9ff"]);
 
   useEffect(() => {

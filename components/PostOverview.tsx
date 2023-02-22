@@ -1,4 +1,4 @@
-import { Post } from "@/Utils/types";
+import { Post } from "@/utils/types";
 import { Pill } from "./Pill";
 
 type PostOverviewProps = {
@@ -12,9 +12,7 @@ export const PostOverview = ({ post }: PostOverviewProps) => {
       <h1 className="text-2xl font-medium text-purple-200">{post.title}</h1>
 
       <p className="font-light">{post.contentSnippet}</p>
-      <p className="font-extralight text-sm text-gray-200">
-        posted in datawrapper blogs
-      </p>
+      <p className="font-extralight text-sm text-gray-200">posted in datawrapper blogs</p>
     </div>
   );
 };

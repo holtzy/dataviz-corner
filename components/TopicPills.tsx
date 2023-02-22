@@ -1,4 +1,4 @@
-import { topics } from "@/Utils/types";
+import { topics } from "@/utils/types";
 import { Pill } from "./Pill";
 
 type TopicPillsProps = {};

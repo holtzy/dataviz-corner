@@ -1,4 +1,4 @@
-import { Post, topics } from "@/Utils/types";
+import { Post, topics } from "@/utils/types";
 import { Pill } from "./Pill";
 
 type SideBarTitleProps = {

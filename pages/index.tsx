@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { blogs } from "data/blogs";
 import { PostOverview } from "@/components/PostOverview";
-import { Post } from "@/Utils/types";
+import { Post } from "@/utils/types";
 import fsPromises from "fs/promises";
 import path from "path";
 import { HeaderSection } from "@/components/HeaderSection";
@@ -44,7 +44,7 @@ export default function Home(props: ComponentProps) {
 
       <HeaderSection />
 
-      <main>
+      <main className="-mt-16">
         <div className="wrapper">
           <div className="flex flex-row w-full">
             {/* BLOG COLUMN */}
