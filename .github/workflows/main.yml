@@ -13,7 +13,7 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v3
       # Run index.js in my root folder
-      - uses: ./
+      - uses: ./data/dist
       - run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
