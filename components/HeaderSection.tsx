@@ -16,11 +16,11 @@ export const HeaderSection = () => {
 
       <div className="wrapper">
         <div style={{ height }} className="flex flex-col justify-center ">
-          <h1 className={"z-10 font-bold text-7xl"}>Explore the Art of Data Visualization</h1>
+          <h1 className={"z-10 font-bold text-7xl"}>Explore the World of Data Visualization</h1>
           <br />
-          <p className={"z-10 font-normal text-xl"}>
-            The dataviz corner aggregates the best dataviz blogs and ship the result to your inbox
-            every week. Simply.
+          <p className={"z-10 font-normal text-xl w-96"}>
+            The dataviz corner aggregates the best dataviz blogs and ships the result to your inbox
+            every week.
           </p>
         </div>
       </div>
