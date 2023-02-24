@@ -1,4 +1,5 @@
-export const topics = ['R', 'python', 'd3', 'react', 'julia', 'tableau', 'news', 'tech', 'theory', 'conference', 'product', 'data journalism', 'scrollytelling'] as const
+import { topics } from "./constants";
+
 export type Topic = typeof topics[number]
 
 export type Post = {
