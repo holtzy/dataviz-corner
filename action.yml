@@ -1,7 +1,7 @@
-name: 'Hello worldddd'
-description: 'say hello world mate'
-author: 'Yan Holtz Bro'
+name: "Fetch RSS feed Action"
+description: "This action fetches RSS feeds, write them in a JSON file, and commit the result."
+author: "Yan Holtz"
 
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: "node12"
+  main: "data/dist/index.js"
