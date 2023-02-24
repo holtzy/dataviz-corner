@@ -20,5 +20,3 @@ jobs:
           git add .
           git commit -m "fetch data"
           git push
-
-
