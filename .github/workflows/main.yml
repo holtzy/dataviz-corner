@@ -12,6 +12,10 @@ jobs:
       # Check out the repository so it can read the files inside of it and do other operations
       - name: Check out repo
         uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
       # Run index.js in my root folder
       - name: Fetch RSS feeds and write JSON data
         uses: ./ # in ./ there is an action.yml file that says what to do
@@ -21,3 +25,16 @@ jobs:
           git add .
           git commit -m "fetch data"
           git push
+      - name: Install packages
+        run: npm ci
+      - name: Build project
+        run: npm run build
+      - name: Export static files
+        run: npm run export
+      - name: Add .nojekyll file
+        run: touch ./out/.nojekyll
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: gh-pages
+          folder: out
