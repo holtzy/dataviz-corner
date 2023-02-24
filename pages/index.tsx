@@ -9,6 +9,8 @@ import { TopicPills } from "@/components/TopicPills";
 import { SideBarTitle } from "@/components/SideBarTitle";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Link from "next/link";
+import { slugify } from "@/utils/slugify";
 
 type ComponentProps = {
   posts: Post[];
@@ -22,9 +24,12 @@ export default function Home(props: ComponentProps) {
   const posts = props.posts;
 
   const allPosts = posts.map((post, i) => {
+    const link = slugify(post.title);
     return (
       <div key={i} className="">
-        <PostOverview post={post} />
+        <Link href={link}>
+          <PostOverview post={post} />
+        </Link>
       </div>
     );
   });

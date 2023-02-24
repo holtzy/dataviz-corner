@@ -24,6 +24,18 @@
 .wrapper > * {
   grid-column: 2;
 }
+.wrapperNarrow {
+  padding-left: 15px;
+  padding-right: 15px;
+  display: grid;
+  grid-template-columns:
+    1fr
+    min(600px, 100%)
+    1fr;
+}
+.wrapperNarrow > * {
+  grid-column: 2;
+}
 .full-bleed {
   padding-left: 0px;
   padding-right: 0px;

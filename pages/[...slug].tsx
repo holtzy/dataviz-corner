@@ -1,9 +1,10 @@
 import { Post } from "@/utils/types";
-import fsPromises from "fs/promises";
-import path from "path";
 import { GetStaticPaths } from "next";
-import content from "data/data-first-20.json";
+import content from "data/data-full.json";
 import { slugify } from "@/utils/slugify";
+import sanitizeHtml from "sanitize-html";
+import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
 
 type ComponentProps = {
   posts: Post[];
@@ -23,10 +24,24 @@ export async function getStaticProps({ params }: any) {
 }
 
 export default function Page({ page }) {
+  const cleanHTML = sanitizeHtml(page.content, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
+    allowedAttributes: {
+      a: ["href"],
+    },
+    allowedIframeHostnames: ["www.youtube.com"],
+  });
   return (
     <>
-      <h1>{page.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: page.contentSnippet }}></div>
+      <div className="wrapperNarrow">
+        <h1>{page.title}</h1>
+        <div dangerouslySetInnerHTML={{ __html: cleanHTML }}></div>
+      </div>
+
+      <Contact />
+      <div className="wrapper">
+        <Footer />
+      </div>
     </>
   );
 }
