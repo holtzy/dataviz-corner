@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { blogs } from "data/blogs";
 import { PostOverview } from "@/components/PostOverview";
 import { Post } from "@/utils/types";
 import fsPromises from "fs/promises";
