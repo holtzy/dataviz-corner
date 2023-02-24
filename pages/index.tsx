@@ -1,16 +1,16 @@
 import Head from "next/head";
-import { PostOverview } from "@/components/PostOverview";
-import { Post } from "@/utils/types";
+import { PostOverview } from "components/PostOverview";
+import { Post } from "utils/types";
 import fsPromises from "fs/promises";
 import path from "path";
-import { HeaderSection } from "@/components/HeaderSection";
-import Contact from "@/components/Contact";
-import { TopicPills } from "@/components/TopicPills";
-import { SideBarTitle } from "@/components/SideBarTitle";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { HeaderSection } from "components/HeaderSection";
+import Contact from "components/Contact";
+import { TopicPills } from "components/TopicPills";
+import { SideBarTitle } from "components/SideBarTitle";
+import Navbar from "components/Navbar";
+import Footer from "components/Footer";
 import Link from "next/link";
-import { slugify } from "@/utils/slugify";
+import { slugify } from "utils/slugify";
 
 type ComponentProps = {
   posts: Post[];

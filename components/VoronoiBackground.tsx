@@ -3,7 +3,7 @@
 import * as d3 from "d3";
 import { Delaunay } from "d3";
 import { useEffect, useMemo, useRef, useState } from "react";
-import Perlin from "@/utils/perlin";
+import Perlin from "utils/perlin";
 
 //
 // Create initial dataset

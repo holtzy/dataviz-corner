@@ -1,6 +1,3 @@
-import { Post, topics } from "@/utils/types";
-import { Pill } from "./Pill";
-
 type SideBarTitleProps = {
   title: string;
 };

@@ -1,5 +1,5 @@
-import { blogs } from "@/data/blogs";
-import { Post } from "@/utils/types";
+import { blogs } from "data/blogs";
+import { Post } from "utils/types";
 import { Pill } from "./Pill";
 
 type PostOverviewProps = {

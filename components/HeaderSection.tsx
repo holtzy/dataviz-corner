@@ -1,4 +1,4 @@
-import { useDimensions } from "@/hook/use-dimensions";
+import { useDimensions } from "hook/use-dimensions";
 import { useRef } from "react";
 import { VoronoiBackground } from "./VoronoiBackground";
 import styles from "./header-section.module.css";

@@ -1,9 +1,9 @@
-import { Post } from "@/utils/types";
-import { slugify } from "@/utils/slugify";
+import { Post } from "utils/types";
+import { slugify } from "utils/slugify";
 import sanitizeHtml from "sanitize-html";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+import Contact from "components/Contact";
+import Footer from "components/Footer";
+import Navbar from "components/Navbar";
 import Head from "next/head";
 import fsPromises from "fs/promises";
 import path from "path";
