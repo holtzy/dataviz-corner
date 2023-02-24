@@ -3,7 +3,7 @@ import { blogs } from "./blogs";
 // This is the script run to harvest rss feeds every x hours.
 // To be run by the github action, it needs to be bundled with the necessary library
 // This is possible thanks to the ncc lib using:
-// ncc build index.ts -o dist
+// ncc build data/index.ts -o data/dist
 // Do it each time this file is modified
 
 // Import the filesystem module
@@ -39,7 +39,7 @@ Promise.allSettled(allPromises).then((res) => {
   //
   const json = JSON.stringify(allPosts);
   fs.writeFile(
-    "data-full.json",
+    "data/data-full.json",
     json,
     {
       encoding: "utf8",
@@ -72,7 +72,7 @@ Promise.allSettled(allPromises).then((res) => {
   });
   const firstPostsJson = JSON.stringify(firstPosts);
   fs.writeFile(
-    "data-first-20.json",
+    "data/data-first-20.json",
     firstPostsJson,
     {
       encoding: "utf8",
