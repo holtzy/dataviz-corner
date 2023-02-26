@@ -25,7 +25,7 @@ export default function Home(props: ComponentProps) {
   const posts = props.posts;
 
   const allPosts = posts.map((post, i) => {
-    const link = slugify(post.title);
+    const link = "/" + slugify(post.title);
     return (
       <div key={i} className="">
         <Link href={link}>
