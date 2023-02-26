@@ -18,7 +18,7 @@ export const PostOverview = ({ post }: PostOverviewProps) => {
     return null;
   }
 
-  const imgSrc = "blogLogo/" + blogInfo.img;
+  const imgSrc = "blogLogo/" + blogInfo.img; //img MUST be in absolute path
 
   const date = new Date(post.isoDate);
   const formattedDate = date.toLocaleString("en-GB", {
