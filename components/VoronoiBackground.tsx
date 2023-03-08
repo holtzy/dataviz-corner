@@ -13,7 +13,7 @@ const perlin = new Perlin(Math.random());
 
 const OFFSET_STEP = 0.0042; // if offset_step is higher, we move each time to a step that is further in the perlin noise, thus more different. It results in an animation that looks faster.
 const NOISE_FACTOR = 0.003;
-const PARTICLE_NUMBER = 1500;
+const PARTICLE_NUMBER = 2500;
 
 type VoronoiBackgroundProps = {
   width: number;
